@@ -4,26 +4,26 @@
 double const H = 10;
 double const Vmax = 20;            
 double const Noise = 0.000000001;
-double const S = 50;   
-double const Ps = 16;              
+double const S = 50000000;   
+double const Ps = 0.039810717055;              
 double const Pwpt = 1000;            
 double const w0 = 0.001;      
 double const alpha = 2.3;         
 double const Pb = 0.000001;
-double const Pu = 8;     
+double const Pu = 0.008;     
 double const DelT = 0.5;
 double const muy = 0.84;
 double const Nmax = 0.5;
 double const E = 0.5772156649;
 double const B = 1000000; //mhz
 
-double const ws[2] = {5,0};
-double const wd[2] = {15,0};
+double const ws[2] = {5,0};   //vị trí nguồn
+double const wd[2] = {15,0};  //vị trí đích
 
-int const N = 10;
-
+int const N = 10;  //số khe thời gian
+double Tn = 0.5;   // 
 double q[N*N];
-double Tn = 0.5;
+
 double f22a = 0, f22b = 0, f22d1 = 0, f22d2 = 0;
 double F22a = 0, F22b = 0, F22d1 = 0, F22d2 = 0;
 double dsu, ddu;
@@ -63,13 +63,12 @@ int Lcheck(int d) {
 }
 
 int main () {
-	
 	// init
+	// vị trí đầu
+		q[0] = 0;  q[N] = 20;
+	// vị trí cuối
+		q[N-1] = 10; q[(N-1)*(N-1)] = 10;
 	
-	q[0] = 0; 
-	q[N] = 20;
-	q[N-1] = 10; 
-	q[(N-1)*(N-1)] = 10;
 	Calc(q[0], q[N], 0);
 	F22a = f22a;
 	F22b = f22b;
