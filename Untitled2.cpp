@@ -15,7 +15,7 @@ double const Pu = 0.008;
 double const DelT = 0.5;
 double const muy = 0.84;
 double const Nmax = 0.5;
-double const E = 0.5772156649;
+double const E = pow(10, 1.6 * 6);
 double const B = 1000000; //mhz
 double const I = 0.1;
 
@@ -45,8 +45,8 @@ double dsu, ddu;
 void Calc(double q1, double q2, double d) {
 	dsu = sqrt( H*H + (q1 - ws[0]) * (q1 - ws[0]) + (q2 - ws[1]) * (q2 - ws[1]));
 	ddu = sqrt( H*H + (q1 - wd[0]) * (q1 - wd[0]) + (q2 - wd[1]) * (q2 - wd[1]));
-	f22a = B * Tn / log(2) * log(1 + (exp(-E) * w0 / Noise) * (Nmax * w0 * Ps + Pu * ceil(sqrt(Noise)) * pow(dsu,alpha)) / pow(dsu,alpha) / pow(ddu,alpha) );
-	f22b = B * Tn / log(2) * log(1 + (exp(-E) * w0 * Ps) / pow(dsu,alpha) / Noise);
+	f22a = B * Tn * DelT / log(2) * log(1 + (exp(-E) * w0 / Noise) * (Nmax * w0 * Ps + Pu * ceil(sqrt(Noise)) * pow(dsu,alpha)) / pow(dsu,alpha) / pow(ddu,alpha) );
+	f22b = B * Tn * DelT / log(2) * log(1 + (exp(-E) * w0 * Ps) / pow(dsu,alpha) / Noise);
 	
 	// Ham nang luong
 	double P0 = del / 8 * p * s * A * pow(Ohm,3) * pow(R,3);
