@@ -30,7 +30,7 @@ double const s = 0.05;
 double const d0 = 0.0151;
 double const k = 0.1;
 double const del = 0.012;
-double v0 = sqrt(W / (2*p*A));
+double const v0 = sqrt(W / (2*p*A));
 
 struct Loca {
 	double x;
