@@ -3,11 +3,11 @@
 
 // Table 1, paper 1
 double const H = 10;
-double const Vmax = 10;            
+double const Vmax = 4.2;            
 double const Noise = 0.000000001;
 double const S = 50000000;   
 double const Ps = 0.04;              
-double const Pwpt = 1000;            
+double const Pwpt = pow(10,6.3);            
 double const w0 = 0.001;      
 double const alpha = 2.3;         
 double const Pb = 0.000001;
@@ -16,7 +16,7 @@ double const DelT = 0.5;
 double const muy = 0.84;
 double const Nmax = 0.5;
 double const E = 0.5772156649;
-double const B = 1500000; //mhz
+double const B = 4; //mhz
 double const I = 0.1;
 
 // Table 1, paper 2
@@ -34,7 +34,7 @@ double const v0 = 7.2;
 double const ws[2] = {3,0};   //v? trí ngu?n
 double const wd[2] = {7,2};  //v? trí dích
 
-int const N = 10;  //s? khe th?i gian
+int const N = 10,iV=floor(sqrt(Vmax*Vmax-1));  //s? khe th?i gian
 double Tn = 0.5;   // 
 double x[100],xopt[100],sum[100];
 double y[100],yopt[100],F22_a[100];
@@ -94,16 +94,16 @@ if (F22_a[N-1]>f22amax) {
 }
 }
 void find(int i,int j){
-	i=i+1;
-	if (j-3<0) jmin[i]=0 ; else jmin[i]=j-3;
-	if (j+3>10) jmax[i]=10;  else jmax[i]=j+3;
+	i=i+1; 
+	if (j-iV<0) jmin[i]=0 ; else jmin[i]=j-iV;
+	if (j+iV>10) jmax[i]=10;  else jmax[i]=j+iV;
 	if (i==N) {max(); F22a=0;}
  	if (i<N) {for(int k=jmin[i];k<=jmax[i];k++) 
 	{x[i]=i;
 	y[i]=k;
 	F22_a[i]=0;
-	Calc(x[i], y[i], 10);
-	if	(sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<3.2*(N-i)){
+	Calc(x[i], y[i], sqrt((x[i]-x[i-1])*(x[i]-x[i-1])+(y[i]-y[i-1])*(y[i]-y[i-1])));
+	if	(sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Vmax*(N-i)){
 	F22_a[i]=F22_a[i-1]+f22a; F22b+=f22b;
 	find(x[i],y[i]);}
 	};
@@ -116,7 +116,6 @@ int main () {
 	// v? trí cu?i
 		xopt[N]=x[N] = 10; yopt[N]=y[N] = 10;
 	find(0,10);
-	Calc(x[N],y[N],0);
 	f22amax+=f22a;
 	printf("\n%lf", f22amax);
 	for(int i=0;i<=N;i++) { printf("\n%lf %lf",xopt[i],yopt[i]);
