@@ -31,11 +31,12 @@ double const k = 0.1;
 double const del = 0.012;
 double const v0 = 7.2;
 
-double const ws[2] = {3,0};   //v? trí ngu?n
-double const wd[2] = {7,0};  //v? trí dích
+double const ws[2] = {3,0};   //vi tri nguon
+double const wd[2] = {7,0};  //vi tri dich
 
-double Tn = 0.5;   // 
-int const N = 10,iV=floor(sqrt(Tn*Vmax*Tn*Vmax-1));  //s? khe th?i gian
+double Tn = 0.5;   
+int const N = 10, //So khe thoi gian
+double const iV=floor(sqrt(Tn*Vmax*Tn*Vmax-1));  
 double x[100],xopt[100],sum[100];
 double y[100],yopt[100],F22_a[100],F22_b[100],F22_d1[100],F22_d2[100];
 int jmin[100],jmax[100];
@@ -61,19 +62,19 @@ void Calc(double q1, double q2, double d) {
 	f22d2 = muy * (1 - Tn) * DelT * w0 * Pwpt / pow(dsu, alpha);
 }
 
-int BScheck(int i) {
+int BScheck(int i) {     //Data tren UAV lon hon Data tai dich
 	if (F22_b[i-1] + f22b + sqrt(Noise) * S < F22_a[i-1] + f22a)
 	   return 0;
 	   else return 1;
 }
 
-int Scheck() {
+int Scheck() {          //Data toi thieu
 	if (F22_a[N] < S)
 	   return 0;
 	   else return 1;
 }
 
-int Echeck(int i) {
+int Echeck(int i) {     // Rang buoc nang luong
 	if (F22_d1[i-1] + f22d1 > F22_d2[i-1] + f22d2)
 	   return 0;
 	   else return 1;
@@ -83,11 +84,11 @@ void max()
 {
 Calc(10, 10, sqrt((10-x[9])*(10-x[9])+(10-y[9])*(10-y[9])));
 F22_a[N]=F22_a[N-1]+f22a;
-if (F22_a[N]>f22amax) {
+if (F22_a[N]>f22amax) {    // Cap nhat gia tri cuc dai
 	if (Scheck()){
 	for(int t=0;t<N;t++)
 	{xopt[t]=x[t]; yopt[t]=y[t];}
-	f22amax=F22_a[N];
+	f22amax=F22_a[N];    
 }
 }
 }
@@ -95,27 +96,25 @@ void find(int i,int j){
 	i=i+1; 
 	if (j-iV<0) jmin[i]=0 ; else jmin[i]=j-iV;
 	if (j+iV>10) jmax[i]=10;  else jmax[i]=j+iV;
-	if (i==N) {max();;}
+	if (i==N) max();
  	if (i<N) {for(int k=jmin[i];k<=jmax[i];k++) 
 	{x[i]=i;
 	y[i]=k;
-//	F22_a[i]=0;
-	Calc(x[i], y[i], sqrt((x[i]-x[i-1])*(x[i]-x[i-1])+(y[i]-y[i-1])*(y[i]-y[i-1])));
-	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Tn*Vmax*(N-i))&&BScheck(i)&&Echeck(i)){
+	Calc(x[i], y[i], sqrt((x[i]-x[i-1])*(x[i]-x[i-1])+(y[i]-y[i-1])*(y[i]-y[i-1])));   //  Tinh toan thong so
+	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Tn*Vmax*(N-i))&&BScheck(i)&&Echeck(i)){  // Kiem tra cac rang buoc
 	F22_a[i]=F22_a[i-1]+f22a; 
 	F22_b[i]=F22_b[i-1]+f22b;
 	F22_d1[i]=F22_d1[i-1]+f22d1;
 	F22_d2[i]=F22_d2[i-1]+f22d2;
-//	printf("%f %f\n",f22d1,f22d2);
 	find(x[i],y[i]);}
 	};
 }}
 
 int main () {
 	// init
-	// v? trí d?u
+	// vi tri dau
 		x[0] = 0;  y[0] = 10;
-	// v? trí cu?i
+	// vi tri cuoi
 		xopt[N]=x[N] = 10; yopt[N]=y[N] = 10;
 	find(0,10);
 	printf("\n%lf", f22amax);
