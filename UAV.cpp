@@ -5,7 +5,7 @@
 double const H = 10;
 double const Vmax = 6.4;            
 double const Noise = 0.000000001;
-double const S = 50000000;   
+double const S = 35;   
 double const Ps = 0.04;              
 double const Pwpt = pow(10,6.3);            
 double const w0 = 0.001;      
@@ -67,8 +67,8 @@ int BScheck(int i) {
 	   else return 1;
 }
 
-int Scheck(int i) {
-	if (F22_a[i-1] + f22a < S)
+int Scheck() {
+	if (F22_a[N] < S)
 	   return 0;
 	   else return 1;
 }
@@ -81,10 +81,14 @@ int Echeck(int i) {
 
 void max()
 {
-if (F22_a[N-1]>f22amax) {
+Calc(10, 10, sqrt((10-x[9])*(10-x[9])+(10-y[9])*(10-y[9])));
+F22_a[N]=F22_a[N-1]+f22a;
+if (F22_a[N]>f22amax) {
+	if (Scheck()){
 	for(int t=0;t<N;t++)
 	{xopt[t]=x[t]; yopt[t]=y[t];}
-	f22amax=F22_a[N-1];
+	f22amax=F22_a[N];
+}
 }
 }
 void find(int i,int j){
@@ -97,7 +101,7 @@ void find(int i,int j){
 	y[i]=k;
 //	F22_a[i]=0;
 	Calc(x[i], y[i], sqrt((x[i]-x[i-1])*(x[i]-x[i-1])+(y[i]-y[i-1])*(y[i]-y[i-1])));
-	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Tn*Vmax*(N-i))&&BScheck(i)){
+	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Tn*Vmax*(N-i))&&BScheck(i)&&Echeck(i)){
 	F22_a[i]=F22_a[i-1]+f22a; 
 	F22_b[i]=F22_b[i-1]+f22b;
 	F22_d1[i]=F22_d1[i-1]+f22d1;
@@ -114,7 +118,6 @@ int main () {
 	// v? trí cu?i
 		xopt[N]=x[N] = 10; yopt[N]=y[N] = 10;
 	find(0,10);
-	f22amax+=f22a;
 	printf("\n%lf", f22amax);
 	for(int i=0;i<=N;i++) { printf("\n%lf %lf",xopt[i],yopt[i]);
 	};
