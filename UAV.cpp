@@ -97,7 +97,7 @@ void find(int i,int j){
 	y[i]=k;
 //	F22_a[i]=0;
 	Calc(x[i], y[i], sqrt((x[i]-x[i-1])*(x[i]-x[i-1])+(y[i]-y[i-1])*(y[i]-y[i-1])));
-	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Vmax*(N-i))&&BScheck(i)){
+	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Tn*Vmax*(N-i))&&BScheck(i)){
 	F22_a[i]=F22_a[i-1]+f22a; 
 	F22_b[i]=F22_b[i-1]+f22b;
 	F22_d1[i]=F22_d1[i-1]+f22d1;
