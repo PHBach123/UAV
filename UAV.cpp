@@ -37,7 +37,7 @@ double const wd[2] = {7,2};  //v? trí dích
 int const N = 10,iV=floor(sqrt(Vmax*Vmax-1));  //s? khe th?i gian
 double Tn = 0.5;   // 
 double x[100],xopt[100],sum[100];
-double y[100],yopt[100],F22_a[100];
+double y[100],yopt[100],F22_a[100],F22_b[100],F22_d1[100],F22_d2[100];
 int jmin[100],jmax[100];
 
 double f22a = 0, f22b = 0, f22d1 = 0, f22d2 = 0,Efly;
@@ -61,50 +61,48 @@ void Calc(double q1, double q2, double d) {
 	f22d2 = muy * (1 - Tn) * DelT * w0 * Pwpt / pow(dsu, alpha);
 }
 
-int BScheck() {
-	if (F22b + f22b + sqrt(Noise) * S < F22a + f22a)
+int BScheck(int i) {
+	if (F22_b[i-1] + f22b + sqrt(Noise) * S < F22_a[i-1] + f22a)
 	   return 0;
 	   else return 1;
 }
 
-int Scheck() {
-	if (F22a + f22a < S)
+int Scheck(int i) {
+	if (F22_a[i-1] + f22a < S)
 	   return 0;
 	   else return 1;
 }
 
-int Echeck() {
-	if (F22d1 + f22d1 > F22d2 + f22d2)
+int Echeck(int i) {
+	if (F22_d1[i-1] + f22d1 > F22_d2[i-1] + f22d2)
 	   return 0;
 	   else return 1;
 }
 
-int Lcheck(int d) {
-	if (d > (Vmax * DelT))
-	   return 0;
- 	   else return 1;
-}
 void max()
 {
 if (F22_a[N-1]>f22amax) {
 	for(int t=0;t<N;t++)
 	{xopt[t]=x[t]; yopt[t]=y[t];}
 	f22amax=F22_a[N-1];
-	F22a=0;F22b=0;
 }
 }
 void find(int i,int j){
 	i=i+1; 
 	if (j-iV<0) jmin[i]=0 ; else jmin[i]=j-iV;
 	if (j+iV>10) jmax[i]=10;  else jmax[i]=j+iV;
-	if (i==N) {max(); F22a=0;}
+	if (i==N) {max();;}
  	if (i<N) {for(int k=jmin[i];k<=jmax[i];k++) 
 	{x[i]=i;
 	y[i]=k;
-	F22_a[i]=0;
+//	F22_a[i]=0;
 	Calc(x[i], y[i], sqrt((x[i]-x[i-1])*(x[i]-x[i-1])+(y[i]-y[i-1])*(y[i]-y[i-1])));
-	if	(sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Vmax*(N-i)){
-	F22_a[i]=F22_a[i-1]+f22a; F22b+=f22b;
+	if	((sqrt((x[i]-x[N])*(x[i]-x[N]) + (y[i]-y[N])*(y[i]-y[N]))<Vmax*(N-i))&&BScheck(i)){
+	F22_a[i]=F22_a[i-1]+f22a; 
+	F22_b[i]=F22_b[i-1]+f22b;
+	F22_d1[i]=F22_d1[i-1]+f22d1;
+	F22_d2[i]=F22_d2[i-1]+f22d2;
+	printf("%f %f\n",f22d1,f22d2);
 	find(x[i],y[i]);}
 	};
 }}
@@ -121,7 +119,3 @@ int main () {
 	for(int i=0;i<=N;i++) { printf("\n%lf %lf",xopt[i],yopt[i]);
 	};
 }
-
-
-	
-
