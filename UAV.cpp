@@ -3,7 +3,7 @@
 
 // Table 1, paper 1
 double const H = 10;
-double const Vmax = 4.2;            
+double const Vmax = 6.4;            
 double const Noise = 0.000000001;
 double const S = 50000000;   
 double const Ps = 0.04;              
@@ -20,11 +20,11 @@ double const B = 4; //mhz
 double const I = 0.1;
 
 // Table 1, paper 2
-double const W = 100;
+double const W = 0.5;
 double const p = 1.225;
 double const R = 0.08;
 double const A = 0.79;
-double const Ohm = 0.5;
+double const Ohm = 100;
 double const s = 0.05;
 double const d0 = 0.0151;
 double const k = 0.1;
@@ -32,10 +32,10 @@ double const del = 0.012;
 double const v0 = 7.2;
 
 double const ws[2] = {3,0};   //v? trí ngu?n
-double const wd[2] = {7,2};  //v? trí dích
+double const wd[2] = {7,0};  //v? trí dích
 
-int const N = 10,iV=floor(sqrt(Vmax*Vmax-1));  //s? khe th?i gian
 double Tn = 0.5;   // 
+int const N = 10,iV=floor(sqrt(Tn*Vmax*Tn*Vmax-1));  //s? khe th?i gian
 double x[100],xopt[100],sum[100];
 double y[100],yopt[100],F22_a[100],F22_b[100],F22_d1[100],F22_d2[100];
 int jmin[100],jmax[100];
@@ -57,7 +57,7 @@ void Calc(double q1, double q2, double d) {
 	double K2 = 1 / 2 / pow(v0,2);
 	double K3 = 0.5 * d0 * p * s * A;
 	double Efly = P0 * (DelT + K1 * pow(d,2)) + P1 * sqrt(sqrt(pow(DelT,4) + pow(K2,2) * pow(d,4)) - K2 * pow(d,2) ) + K3 * pow(del,3) / pow(DelT,2);
-	f22d1 = Efly + Tn * DelT * (Pb + Pu);
+	f22d1 = Efly+   Tn * DelT * (Pb + Pu);
 	f22d2 = muy * (1 - Tn) * DelT * w0 * Pwpt / pow(dsu, alpha);
 }
 
@@ -102,7 +102,7 @@ void find(int i,int j){
 	F22_b[i]=F22_b[i-1]+f22b;
 	F22_d1[i]=F22_d1[i-1]+f22d1;
 	F22_d2[i]=F22_d2[i-1]+f22d2;
-	printf("%f %f\n",f22d1,f22d2);
+//	printf("%f %f\n",f22d1,f22d2);
 	find(x[i],y[i]);}
 	};
 }}
