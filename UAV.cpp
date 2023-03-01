@@ -31,11 +31,11 @@ double const k = 0.1;
 double const del = 0.012;
 double const v0 = 7.2;
 
-double const ws[2] = {3,0};   //vi tri nguon
+double const ws[2] = {2,0};   //vi tri nguon
 double const wd[2] = {7,0};  //vi tri dich
 
 double Tn = 0.5;   
-int const N = 10, //So khe thoi gian
+int const N = 10; //So khe thoi gian
 double const iV=floor(sqrt(Tn*Vmax*Tn*Vmax-1));  
 double x[100],xopt[100],sum[100];
 double y[100],yopt[100],F22_a[100],F22_b[100],F22_d1[100],F22_d2[100];
