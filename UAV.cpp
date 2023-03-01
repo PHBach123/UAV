@@ -117,7 +117,8 @@ int main () {
 	// vi tri cuoi
 		xopt[N]=x[N] = 10; yopt[N]=y[N] = 10;
 	find(0,10);
-	printf("\n%lf", f22amax);
-	for(int i=0;i<=N;i++) { printf("\n%lf %lf",xopt[i],yopt[i]);
+	printf("\nData max:%lf", f22amax);
+	printf("\nToa do di chuyen:");
+	for(int i=0;i<=N;i++) { printf("\nx[i]:%lf	y[i]:%lf",xopt[i],yopt[i]);
 	};
 }
